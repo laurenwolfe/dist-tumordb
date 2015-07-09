@@ -1,13 +1,7 @@
 //Tumor database schema builder
 //Author Lauren Wolfe, for ISB
 
-conf = new BaseConfiguration() {{
-    setProperty("storage.backend", "cassandra")
-    setProperty("storage.hostname", "192.168.59.103")
-    setProperty("storage.batch-loading", true)
-}}
-
-g = HadoopFactory.open("../conf/script-input.properties")
+g = TitanFactory.open("conf/hadoop/script-input.properties")
 mgmt = g.getManagementSystem()
 
 //This will be generated as "feature_type:geneId"
