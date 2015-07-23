@@ -1,7 +1,7 @@
 //Tumor database schema builder
 //Author Lauren Wolfe, for ISB
 
-g = TitanFactory.open("conf/hadoop/script-input.properties")
+g = TitanFactory.open('conf/titan-cassandra.properties')
 mgmt = g.getManagementSystem()
 
 //This will be generated as "feature_type:geneId"
