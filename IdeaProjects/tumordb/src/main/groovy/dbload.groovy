@@ -162,5 +162,3 @@ boolean read(FaunusVertex v, String file_iter) {
     println x + " edges generated"
     println y + " vertices generated"
 }
-
-g.commit()
