@@ -1,4 +1,4 @@
-#Version 0.6
+#Version 0.7
 
 FROM ubuntu:14.04
 MAINTAINER Lauren Wolfe “lulumialu@gmail.com”
@@ -20,7 +20,8 @@ WORKDIR /opt/
 RUN unzip /tmp/titan.zip
 RUN rm /tmp/titan.zip
 
-COPY src/main/conf/script-input.properties /opt/$TITAN_VER/conf/hadoop/
+COPY src/main/conf/hadoop/ /opt/$TITAN_VER/conf/hadoop/
+COPY src/main/conf/titan-cassandra.properties /opt/$TITAN_VER/conf/
 COPY src/main/groovy/ /opt/$TITAN_VER/
 COPY src/data/ /opt/$TITAN_VER/
 
