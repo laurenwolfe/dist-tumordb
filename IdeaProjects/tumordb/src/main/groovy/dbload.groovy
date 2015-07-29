@@ -5,7 +5,7 @@ id = 0
 //type (or could just rtrim the tumor type from filenames.)
 //Example filename: stad.all.16jan15.TP.pwpv
 
-boolean read(FaunusVertex v, String file_iter) {
+def boolean read(FaunusVertex v, String file_iter) {
 //    def details = file_iter.split('\\.')
 
 //    new File(file_iter).eachLine({ final String line ->
@@ -136,7 +136,7 @@ boolean read(FaunusVertex v, String file_iter) {
             !start1 ?: v.setProperty("start", start1)
             !end1 ?: v.setProperty("end", end1)
             !strand1 ?: v.setProperty("strand", strand1)
-
+/*
             def edge = v.addEdge(Direction.OUT, 'linkedTo', id2)
             edge.setProperty("sample_size", sample_size1)
             edge.setProperty("min_log_p_uncorrected", min_log_p_uncorrected1)
@@ -160,8 +160,9 @@ boolean read(FaunusVertex v, String file_iter) {
             !start2 ?: v.setProperty("start", start2)
             !end2 ?: v.setProperty("end", end2)
             !strand2 ?: v.setProperty("strand", strand2)
-
+*/
             id++
         }
     //})
+    return true
 }
