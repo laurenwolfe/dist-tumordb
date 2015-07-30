@@ -70,7 +70,7 @@ def boolean read(FaunusVertex v, String file_iter) {
             !start1 ?: v.setProperty("start", start1)
             !end1 ?: v.setProperty("end", end1)
             !strand1 ?: v.setProperty("strand", strand1)
-
+/*
             v.setId(id2)
             v.setProperty("objectID", objectID2)
             v.setProperty("name", name2)
@@ -82,8 +82,8 @@ def boolean read(FaunusVertex v, String file_iter) {
             !start2 ?: v.setProperty("start", start2)
             !end2 ?: v.setProperty("end", end2)
             !strand2 ?: v.setProperty("strand", strand2)
-
-            def edge = v.addEdge(Direction.OUT, 'linkedTo', id1)
+*/
+            def edge = v.addEdge(Direction.OUT, 'linkedTo', id2)
             edge.setProperty("sample_size", sample_size1)
             edge.setProperty("min_log_p_uncorrected", min_log_p_uncorrected1)
             edge.setProperty("bonferroni", bonferroni1)
@@ -93,9 +93,6 @@ def boolean read(FaunusVertex v, String file_iter) {
             edge.setProperty("min_log_p_unused_b", min_log_p_unused_b1)
             edge.setProperty("genomic_distance", genomic_distance1)
             edge.setProperty("feature_types", featureType1 + ':' + featureType2)
-
-            id1++
-            id2++
         }
     //})
     return true
