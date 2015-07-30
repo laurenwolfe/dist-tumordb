@@ -1,7 +1,3 @@
-//For testing, output count
-def id1 = 1
-def id2 = 40000
-
 //Filename will need to be looped here from another file containing filenames and perhaps tumor
 //type (or could just rtrim the tumor type from filenames.)
 //Example filename: stad.all.16jan15.TP.pwpv
@@ -15,10 +11,10 @@ def boolean read(FaunusVertex v, String file_iter) {
 
         //Pull in line from the tsv
         def (   String object1,
-                String object2,
                 float correlation1,
                 float sample_size1,
                 float min_log_p_uncorrected1,
+                String object2,
                 float bonferroni1,
                 float excluded_sample_count_a1,
                 float min_log_p_unused_a1,
@@ -57,12 +53,10 @@ def boolean read(FaunusVertex v, String file_iter) {
             objectID1 = setObjectID(tumor_type, featureType1, name1)
             objectID2 = setObjectID(tumor_type, featureType2, name2)
 
-/*
-        def id1 = Long.parseLong(id1, 36)
-        id1 = id1.longValue()
-        def id2 = Long.parseLong(id2, 36)
-        id2 = id2.longValue()
-*/
+        def Long longId1 = Long.parseLong(id1, 36)
+        def long id1 = longId1.longValue()
+        def Long longId2 = Long.parseLong(id2, 36)
+        def long id2 = id2.longValue()
 
             //Does the vertex already exist? If not, create it in the db
             v.setId(id1)
