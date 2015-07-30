@@ -12,38 +12,38 @@ def boolean read(FaunusVertex v, String file_iter) {
         //Pull in line from the tsv
         def (   String object1,
                 String object2,
-                float correlation1,
-                float sample_size1,
-                float min_log_p_uncorrected1,
-                float bonferroni1,
-                float excluded_sample_count_a1,
-                float min_log_p_unused_a1,
-                float excluded_sample_count_b1,
-                float min_log_p_unused_b1,
-                float genomic_distance1) = file_iter.split('\t')
+                correlation1,
+                sample_size1,
+                min_log_p_uncorrected1,
+                bonferroni1,
+                excluded_sample_count_a1,
+                min_log_p_unused_a1,
+                excluded_sample_count_b1,
+                min_log_p_unused_b1,
+                genomic_distance1) = file_iter.split('\t')
 
         //Split bioentity column into component data
         def (   String dataType1,
                 String featureType1,
                 String name1,
                 String chr1,
-                int start1,
-                int end1,
-                char strand1,
-                String annotation1) = object1.split(':')
+                start1,
+                end1,
+                strand1,
+                annotation1) = object1.split(':')
 
         //Split bioentity column into component data
         def (   String dataType2,
                 String featureType2,
                 String name2,
                 String chr2,
-                int start2,
-                int end2,
-                char strand2,
-                String annotation2) = object2.split(':')
+                start2,
+                end2,
+                strand2,
+                annotation2) = object2.split(':')
 
-        def String[] idList1
-        def String[] idList2
+        def String idNoColon1
+        def String idNoColon2
         def String objectID1
         def String objectID2
 
@@ -52,15 +52,14 @@ def boolean read(FaunusVertex v, String file_iter) {
         if (annotation1 == "code_potential_somatic" && annotation2 == "code_potential_somatic") {
 
             //Generate objectIDs by concatenating the tumor type, feature type and gene name
-            idList1[] = setObjectID(tumor_type, featureType1, name1)
-            idList2[] = setObjectID(tumor_type, featureType2, name2)
+            objectID1 = setObjectID(tumor_type, featureType1, name1)
+            idNoColon1 = makeID(tumor_type, featureType1, name1)
+            objectID2 = setObjectID(tumor_type, featureType2, name2)
+            idNoColon2 = makeID(tumor_type, featureType2, name2)
 
-            objectID1 = idList1[0]
-            objectID2 = idList2[0]
-
-            def Long longId1 = Long.parseLong(idList1[1], 36)
+            def Long longId1 = Long.parseLong(idNoColon1, 36)
             def long id1 = longId1.longValue()
-            def Long longId2 = Long.parseLong(idList2[2], 36)
+            def Long longId2 = Long.parseLong(idNoColon2, 36)
             def long id2 = id2.longValue()
 
             //Does the vertex already exist? If not, create it in the db
@@ -105,7 +104,7 @@ def boolean read(FaunusVertex v, String file_iter) {
 
 
 //Sets Object ID for each vertex
-def String[] setObjectID(String tumor_type, String featureType, String name) {
+def String setObjectID(String tumor_type, String featureType, String name) {
     switch (featureType) {
         case "GEXB":
             objectID = tumor_type + ':Gene:' + name
@@ -137,5 +136,33 @@ def String[] setObjectID(String tumor_type, String featureType, String name) {
             break
     }
 
-    return [objectID, id]
+    return objectID
+}
+
+def String makeID(String tumor_type, String featureType, String name) {
+    switch (featureType) {
+        case "GEXB":
+            id = tumor_type + 'gene' + name
+            break
+        case "GNAB":
+            id = tumor_type + 'gene' + name
+            break
+        case "CNVR":
+            id = tumor_type + 'gene' + name
+            break
+        case "RPPA":
+            id = tumor_type + 'protein' + name
+            break
+        case "METH":
+            id = tumor_type + 'methylation' + name
+            break
+        case "MIRN":
+            id = tumor_type + 'mirna' + name
+            break
+        default:
+            id = tumor_type + featureType + name
+            break
+    }
+
+    return id
 }
