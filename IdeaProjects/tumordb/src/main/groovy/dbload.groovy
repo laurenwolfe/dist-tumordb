@@ -11,10 +11,10 @@ def boolean read(FaunusVertex v, String file_iter) {
 
         //Pull in line from the tsv
         def (   String object1,
+                String object2,
                 float correlation1,
                 float sample_size1,
                 float min_log_p_uncorrected1,
-                String object2,
                 float bonferroni1,
                 float excluded_sample_count_a1,
                 float min_log_p_unused_a1,
@@ -42,6 +42,8 @@ def boolean read(FaunusVertex v, String file_iter) {
                 char strand2,
                 String annotation2) = object2.split(':')
 
+        def String[] idList1
+        def String[] idList2
         def String objectID1
         def String objectID2
 
@@ -50,13 +52,16 @@ def boolean read(FaunusVertex v, String file_iter) {
         if (annotation1 == "code_potential_somatic" && annotation2 == "code_potential_somatic") {
 
             //Generate objectIDs by concatenating the tumor type, feature type and gene name
-            objectID1 = setObjectID(tumor_type, featureType1, name1)
-            objectID2 = setObjectID(tumor_type, featureType2, name2)
+            idList1[] = setObjectID(tumor_type, featureType1, name1)
+            idList2[] = setObjectID(tumor_type, featureType2, name2)
 
-        def Long longId1 = Long.parseLong(id1, 36)
-        def long id1 = longId1.longValue()
-        def Long longId2 = Long.parseLong(id2, 36)
-        def long id2 = id2.longValue()
+            objectID1 = idList1[0]
+            objectID2 = idList2[0]
+
+            def Long longId1 = Long.parseLong(idList1[1], 36)
+            def long id1 = longId1.longValue()
+            def Long longId2 = Long.parseLong(idList2[2], 36)
+            def long id2 = id2.longValue()
 
             //Does the vertex already exist? If not, create it in the db
             v.setId(id1)
@@ -100,30 +105,37 @@ def boolean read(FaunusVertex v, String file_iter) {
 
 
 //Sets Object ID for each vertex
-def String setObjectID(String tumor_type, String featureType, String name) {
+def String[] setObjectID(String tumor_type, String featureType, String name) {
     switch (featureType) {
         case "GEXB":
             objectID = tumor_type + ':Gene:' + name
+            id = tumor_type + 'gene' + name
             break
         case "GNAB":
             objectID = tumor_type + ':Gene:' + name
+            id = tumor_type + 'gene' + name
             break
         case "CNVR":
             objectID = tumor_type + ':Gene:' + name
+            id = tumor_type + 'gene' + name
             break
         case "RPPA":
             objectID = tumor_type + ':Protein:' + name
+            id = tumor_type + 'protein' + name
             break
         case "METH":
             objectID = tumor_type + ':Methylation:' + name
+            id = tumor_type + 'methylation' + name
             break
         case "MIRN":
             objectID = tumor_type + ':miRNA:' + name
+            id = tumor_type + 'mirna' + name
             break
         default:
             objectID = tumor_type + ':' + featureType + ':' + name
+            id = tumor_type + featureType + name
             break
     }
 
-    return objectID
+    return [objectID, id]
 }
