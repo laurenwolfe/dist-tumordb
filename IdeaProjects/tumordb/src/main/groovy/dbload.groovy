@@ -57,10 +57,10 @@ def boolean read(FaunusVertex v, String file_iter) {
             objectID2 = setObjectID(tumor_type, featureType2, name2)
             idNoColon2 = makeID(tumor_type, featureType2, name2)
 
-            def Long longId1 = Long.parseLong(idNoColon1, 36)
+            def Long longId1 = Long.valueOf(idNoColon1, 36)
             def long id1 = longId1.longValue()
-            def Long longId2 = Long.parseLong(idNoColon2, 36)
-            def long id2 = id2.longValue()
+            def Long longId2 = Long.valueOf(idNoColon2, 36)
+            def long id2 = longId2.longValue()
 
             //Does the vertex already exist? If not, create it in the db
             v.setId(id1)
@@ -108,31 +108,24 @@ def String setObjectID(String tumor_type, String featureType, String name) {
     switch (featureType) {
         case "GEXB":
             objectID = tumor_type + ':Gene:' + name
-            id = tumor_type + 'gene' + name
             break
         case "GNAB":
             objectID = tumor_type + ':Gene:' + name
-            id = tumor_type + 'gene' + name
             break
         case "CNVR":
             objectID = tumor_type + ':Gene:' + name
-            id = tumor_type + 'gene' + name
             break
         case "RPPA":
             objectID = tumor_type + ':Protein:' + name
-            id = tumor_type + 'protein' + name
             break
         case "METH":
             objectID = tumor_type + ':Methylation:' + name
-            id = tumor_type + 'methylation' + name
             break
         case "MIRN":
             objectID = tumor_type + ':miRNA:' + name
-            id = tumor_type + 'mirna' + name
             break
         default:
             objectID = tumor_type + ':' + featureType + ':' + name
-            id = tumor_type + featureType + name
             break
     }
 
