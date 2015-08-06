@@ -2,10 +2,10 @@
 //type (or could just rtrim the tumor type from filenames.)
 //Example filename: stad.all.16jan15.TP.pwpv
 
-Random random = new Random()
-
 def boolean read(FaunusVertex v, String file_iter) {
 //    def details = file_iter.split('\\.')
+      def Random random = new Random()
+      def Date date = new Date()
 
 //    new File(file_iter).eachLine({ final String line ->
         tumor_type = 'stad'
@@ -52,27 +52,13 @@ def boolean read(FaunusVertex v, String file_iter) {
         //This is for filtering by annotation type, currently both bioentities need to be code_potential_somatic for the
         //code block to execute.
         if (annotation1 == "code_potential_somatic" && annotation2 == "code_potential_somatic") {
-            println '1 +++++++++++++++++++++++++++++++++++++++++++'
 
             //Generate objectIDs by concatenating the tumor type, feature type and gene name
             objectID1 = setObjectID(tumor_type, featureType1, name1)
-//            idNoColon1 = makeID(tumor_type, featureType1, name1)
             objectID2 = setObjectID(tumor_type, featureType2, name2)
-//            idNoColon2 = makeID(tumor_type, featureType2, name2)
-            println '2 +++++++++++++++++++++++++++++++++++++++++++'
 
-/*            def Integer longId1 = Integer.valueOf(idNoColon1.toLowerCase(), 36)
-            def long id1 = longId1.longValue()
-            def Integer longId2 = Integer.valueOf(idNoColon2.toLowerCase(), 36)
-            def long id2 = longId2.longValue()
-*/
-
-            timestamp = Calendar.instance
-
-            now = date.time
-            date = now.time
-            id1 = date.time + random.nextLong()
-            id2 = date.time + random.nextLong()
+            id1 = date.getTime()
+            id2 = date.getTime()
 
             println "id1: " + id1 + "id2: " + id2
 
@@ -88,8 +74,6 @@ def boolean read(FaunusVertex v, String file_iter) {
             !start1 ?: v.setProperty("start", start1)
             !end1 ?: v.setProperty("end", end1)
             !strand1 ?: v.setProperty("strand", strand1)
-
-            id2 = date.time
 
             v.setId(id2)
             v.setProperty("objectID", objectID2)
