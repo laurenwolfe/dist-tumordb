@@ -2,6 +2,8 @@
 //type (or could just rtrim the tumor type from filenames.)
 //Example filename: stad.all.16jan15.TP.pwpv
 
+Random random = new Random()
+
 def boolean read(FaunusVertex v, String file_iter) {
 //    def details = file_iter.split('\\.')
 
@@ -50,17 +52,29 @@ def boolean read(FaunusVertex v, String file_iter) {
         //This is for filtering by annotation type, currently both bioentities need to be code_potential_somatic for the
         //code block to execute.
         if (annotation1 == "code_potential_somatic" && annotation2 == "code_potential_somatic") {
+            println '1 +++++++++++++++++++++++++++++++++++++++++++'
 
             //Generate objectIDs by concatenating the tumor type, feature type and gene name
             objectID1 = setObjectID(tumor_type, featureType1, name1)
-            idNoColon1 = makeID(tumor_type, featureType1, name1)
+//            idNoColon1 = makeID(tumor_type, featureType1, name1)
             objectID2 = setObjectID(tumor_type, featureType2, name2)
-            idNoColon2 = makeID(tumor_type, featureType2, name2)
+//            idNoColon2 = makeID(tumor_type, featureType2, name2)
+            println '2 +++++++++++++++++++++++++++++++++++++++++++'
 
-            def Long longId1 = Long.valueOf(idNoColon1, 36)
+/*            def Integer longId1 = Integer.valueOf(idNoColon1.toLowerCase(), 36)
             def long id1 = longId1.longValue()
-            def Long longId2 = Long.valueOf(idNoColon2, 36)
+            def Integer longId2 = Integer.valueOf(idNoColon2.toLowerCase(), 36)
             def long id2 = longId2.longValue()
+*/
+
+            timestamp = Calendar.instance
+
+            now = date.time
+            date = now.time
+            id1 = date.time + random.nextLong()
+            id2 = date.time + random.nextLong()
+
+            println "id1: " + id1 + "id2: " + id2
 
             //Does the vertex already exist? If not, create it in the db
             v.setId(id1)
@@ -74,6 +88,8 @@ def boolean read(FaunusVertex v, String file_iter) {
             !start1 ?: v.setProperty("start", start1)
             !end1 ?: v.setProperty("end", end1)
             !strand1 ?: v.setProperty("strand", strand1)
+
+            id2 = date.time
 
             v.setId(id2)
             v.setProperty("objectID", objectID2)
@@ -159,3 +175,4 @@ def String makeID(String tumor_type, String featureType, String name) {
 
     return id
 }
+
