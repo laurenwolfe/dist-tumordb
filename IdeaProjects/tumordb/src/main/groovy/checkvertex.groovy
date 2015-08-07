@@ -7,11 +7,11 @@ def TitanVertex getOrCreateVertex(vertex,  graph, context, log) {
     if (null == uniqueValue)
         throw new RuntimeException(vertex + " has no value for key " + uniqueKey)
 
-    Iterator<Vertex> itty = graph.query().has(uniqueKey, uniqueValue).vertices().iterator()
+    Iterator<Vertex> it = graph.query().has(uniqueKey, uniqueValue).vertices().iterator()
 
-    if(itty.hasNext()) {
-        titanVertex = itty.next()
-        if (itty.hasNext())
+    if(it.hasNext()) {
+        titanVertex = it.next()
+        if (it.hasNext())
             log.info("The key {} has duplicated value {}", uniqueKey, uniqueValue)
     } else {
         titanVertex = graph.addVertex(vertex.getId())
