@@ -2,15 +2,6 @@
 //type (or could just rtrim the tumor type from filenames.)
 //Example filename: stad.all.16jan15.TP.pwpv
 
-ID_CHARACTERS = ['0'..'9','D'].flatten()
-NUM_CHARACTERS = ID_CHARACTERS.size()
-
-def long encodeId(String id) {
-    id.inject(0L, { acc, c ->
-        acc * NUM_CHARACTERS + ID_CHARACTERS.indexOf(c)
-    })
-}
-
 //Sets Object ID for each vertex
 def String setObjectID(String tumor_type, String featureType, String name) {
     switch (featureType) {
@@ -82,10 +73,8 @@ def boolean read(FaunusVertex v, String file_iter) {
                 strand2,
                 annotation2) = object2.split(':')
 
-        def String idNoColon1
-        def String idNoColon2
-        def String objectID1
-        def String objectID2
+//        def String objectID1
+//        def String objectID2
 
         //This is for filtering by annotation type, currently both bioentities need to be code_potential_somatic for the
         //code block to execute.
@@ -95,17 +84,14 @@ def boolean read(FaunusVertex v, String file_iter) {
             objectID1 = setObjectID(tumor_type, featureType1, name1)
             objectID2 = setObjectID(tumor_type, featureType2, name2)
 
-            id1 = Long.parseLong(Long.toString(date.getTime()) + Integer.toString(new Random().nextInt(899) + 100))
-            id2 = Long.parseLong(Long.toString(date.getTime()) + Integer.toString(new Random().nextInt(899) + 100))
-
-            println "id1: " + id1 + " id2: " + id2
-
-            println id1.class
-
+            id1Long = Long.parseLong(Long.toString(date.getTime()) + Integer.toString(new Random().nextInt(899) + 100))
+            id2Long = Long.parseLong(Long.toString(date.getTime()) + Integer.toString(new Random().nextInt(899) + 100))
+            id1 = id1Long.longValue()
+            id2 = id2Long.longValue()
 
             //Does the vertex already exist? If not, create it in the db
             v.setId(id1)
-/*
+
             v.setProperty("objectID", objectID1)
             v.setProperty("name", name1)
             v.setProperty("tumor_type", tumor_type)
@@ -129,7 +115,7 @@ def boolean read(FaunusVertex v, String file_iter) {
             !end2 ?: v.setProperty("end", end2)
             !strand2 ?: v.setProperty("strand", strand2)
 
-            def edge = v.addEdge(Direction.OUT, 'linkedTo', id1)
+            def edge = v.addEdge(Direction.OUT, 'pairwise', id1)
             edge.setProperty("sample_size", sample_size1)
             edge.setProperty("min_log_p_uncorrected", min_log_p_uncorrected1)
             edge.setProperty("bonferroni", bonferroni1)
@@ -139,37 +125,7 @@ def boolean read(FaunusVertex v, String file_iter) {
             edge.setProperty("min_log_p_unused_b", min_log_p_unused_b1)
             edge.setProperty("genomic_distance", genomic_distance1)
             edge.setProperty("feature_types", featureType1 + ':' + featureType2)
-*/
-
         }
     //})
     return true
-}
-
-def String makeID(String tumor_type, String featureType, String name) {
-    switch (featureType) {
-        case "GEXB":
-            id = tumor_type + 'gene' + name
-            break
-        case "GNAB":
-            id = tumor_type + 'gene' + name
-            break
-        case "CNVR":
-            id = tumor_type + 'gene' + name
-            break
-        case "RPPA":
-            id = tumor_type + 'protein' + name
-            break
-        case "METH":
-            id = tumor_type + 'methylation' + name
-            break
-        case "MIRN":
-            id = tumor_type + 'mirna' + name
-            break
-        default:
-            id = tumor_type + featureType + name
-            break
-    }
-
-    return id
 }

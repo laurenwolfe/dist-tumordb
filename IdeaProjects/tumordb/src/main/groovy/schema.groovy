@@ -5,7 +5,6 @@ g = TitanFactory.open('conf/titan-cassandra.properties')
 mgmt = g.getManagementSystem()
 
 //This will be generated as "feature_type:geneId"
-id = mgmt.makePropertyKey('id').dataType(Long.class).make()
 objectId = mgmt.makePropertyKey('objectID').dataType(String.class).make()
 //Type of relationship between vertices -- all pairwise for this batch load script
 pairwise = mgmt.makeEdgeLabel('pairwise').multiplicity(Multiplicity.MULTI).make()
