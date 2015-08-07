@@ -100,8 +100,6 @@ def boolean read(FaunusVertex v, String file_iter) {
             edge.setProperty("genomic_distance", genomic_distance1)
             edge.setProperty("feature_types", featureType1 + ':' + featureType2)
 
-            id1++
-            id2++
         }
     //})
     return true
