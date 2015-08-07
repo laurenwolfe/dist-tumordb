@@ -1,3 +1,5 @@
+import java.awt.TexturePaintContext
+
 //Filename will need to be looped here from another file containing filenames and perhaps tumor
 //type (or could just rtrim the tumor type from filenames.)
 //Example filename: stad.all.16jan15.TP.pwpv
@@ -57,8 +59,10 @@ def boolean read(FaunusVertex v, String file_iter) {
             objectID1 = setObjectID(tumor_type, featureType1, name1)
             objectID2 = setObjectID(tumor_type, featureType2, name2)
 
-            id1 = date.getTime()
-            id2 = date.getTime()
+            id1 = Long.parseLong(Long.toString(date.getTime())) + Long.parseLong(Integer.toString(new Random().nextInt(899) + 100))
+            id2 = Long.parseLong(Long.toString(date.getTime())) + Long.parseLong(Integer.toString(new Random().nextInt(899) + 100))
+
+//          id2 = date.getTime() + new Random().nextInt(899) + 100
 
             println "id1: " + id1 + "id2: " + id2
 
