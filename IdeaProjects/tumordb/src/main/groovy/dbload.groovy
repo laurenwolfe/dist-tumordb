@@ -59,13 +59,8 @@ def boolean read(FaunusVertex v, String file_iter) {
             objectID1 = setObjectID(tumor_type, featureType1, name1)
             objectID2 = setObjectID(tumor_type, featureType2, name2)
 
-//            id1 = Long.parseLong(Long.toString(date.getTime())) + Long.parseLong(Integer.toString(new Random().nextInt(899) + 100))
-//            id2 = Long.parseLong(Long.toString(date.getTime())) + Long.parseLong(Integer.toString(new Random().nextInt(899) + 100))
-
-//          id2 = date.getTime() + new Random().nextInt(899) + 100
-
-            id1 = 8000000
-            id2 = 1
+            id1 = Long.parseLong(Long.toString(date.getTime())) + Long.parseLong(Integer.toString(new Random().nextInt(899) + 100))
+            id2 = Long.parseLong(Long.toString(date.getTime())) + Long.parseLong(Integer.toString(new Random().nextInt(899) + 100))
 
             println "id1: " + id1 + " id2: " + id2
 
@@ -94,7 +89,7 @@ def boolean read(FaunusVertex v, String file_iter) {
             !end2 ?: v.setProperty("end", end2)
             !strand2 ?: v.setProperty("strand", strand2)
 
-            def edge = v.addEdge(Direction.OUT, 'linkedTo', id2)
+            def edge = v.addEdge(Direction.OUT, 'linkedTo', id1)
             edge.setProperty("sample_size", sample_size1)
             edge.setProperty("min_log_p_uncorrected", min_log_p_uncorrected1)
             edge.setProperty("bonferroni", bonferroni1)
