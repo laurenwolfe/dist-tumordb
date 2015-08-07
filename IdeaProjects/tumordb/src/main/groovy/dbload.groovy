@@ -1,8 +1,44 @@
-import java.awt.TexturePaintContext
-
 //Filename will need to be looped here from another file containing filenames and perhaps tumor
 //type (or could just rtrim the tumor type from filenames.)
 //Example filename: stad.all.16jan15.TP.pwpv
+
+ID_CHARACTERS = ['0'..'9','D'].flatten()
+NUM_CHARACTERS = ID_CHARACTERS.size()
+
+def long encodeId(String id) {
+    id.inject(0L, { acc, c ->
+        acc * NUM_CHARACTERS + ID_CHARACTERS.indexOf(c)
+    })
+}
+
+//Sets Object ID for each vertex
+def String setObjectID(String tumor_type, String featureType, String name) {
+    switch (featureType) {
+        case "GEXB":
+            objectID = tumor_type + ':Gene:' + name
+            break
+        case "GNAB":
+            objectID = tumor_type + ':Gene:' + name
+            break
+        case "CNVR":
+            objectID = tumor_type + ':Gene:' + name
+            break
+        case "RPPA":
+            objectID = tumor_type + ':Protein:' + name
+            break
+        case "METH":
+            objectID = tumor_type + ':Methylation:' + name
+            break
+        case "MIRN":
+            objectID = tumor_type + ':miRNA:' + name
+            break
+        default:
+            objectID = tumor_type + ':' + featureType + ':' + name
+            break
+    }
+
+    return objectID
+}
 
 def boolean read(FaunusVertex v, String file_iter) {
 //    def details = file_iter.split('\\.')
@@ -65,7 +101,7 @@ def boolean read(FaunusVertex v, String file_iter) {
             println "id1: " + id1 + " id2: " + id2
 
             //Does the vertex already exist? If not, create it in the db
-            v.setId(id1)
+            v.setId(encodeId(Long.toString(id1)))
             v.setProperty("objectID", objectID1)
             v.setProperty("name", name1)
             v.setProperty("tumor_type", tumor_type)
@@ -77,7 +113,7 @@ def boolean read(FaunusVertex v, String file_iter) {
             !end1 ?: v.setProperty("end", end1)
             !strand1 ?: v.setProperty("strand", strand1)
 
-            v.setId(id2)
+            v.setId(encodeId(Long.toString(id2)))
             v.setProperty("objectID", objectID2)
             v.setProperty("name", name2)
             v.setProperty("tumor_type", tumor_type)
@@ -89,7 +125,7 @@ def boolean read(FaunusVertex v, String file_iter) {
             !end2 ?: v.setProperty("end", end2)
             !strand2 ?: v.setProperty("strand", strand2)
 
-            def edge = v.addEdge(Direction.OUT, 'linkedTo', id1)
+            def edge = v.addEdge(Direction.OUT, 'linkedTo', encodeId(Long.toString(id1)))
             edge.setProperty("sample_size", sample_size1)
             edge.setProperty("min_log_p_uncorrected", min_log_p_uncorrected1)
             edge.setProperty("bonferroni", bonferroni1)
@@ -100,39 +136,10 @@ def boolean read(FaunusVertex v, String file_iter) {
             edge.setProperty("genomic_distance", genomic_distance1)
             edge.setProperty("feature_types", featureType1 + ':' + featureType2)
 
+
         }
     //})
     return true
-}
-
-
-//Sets Object ID for each vertex
-def String setObjectID(String tumor_type, String featureType, String name) {
-    switch (featureType) {
-        case "GEXB":
-            objectID = tumor_type + ':Gene:' + name
-            break
-        case "GNAB":
-            objectID = tumor_type + ':Gene:' + name
-            break
-        case "CNVR":
-            objectID = tumor_type + ':Gene:' + name
-            break
-        case "RPPA":
-            objectID = tumor_type + ':Protein:' + name
-            break
-        case "METH":
-            objectID = tumor_type + ':Methylation:' + name
-            break
-        case "MIRN":
-            objectID = tumor_type + ':miRNA:' + name
-            break
-        default:
-            objectID = tumor_type + ':' + featureType + ':' + name
-            break
-    }
-
-    return objectID
 }
 
 def String makeID(String tumor_type, String featureType, String name) {
@@ -162,4 +169,3 @@ def String makeID(String tumor_type, String featureType, String name) {
 
     return id
 }
-
