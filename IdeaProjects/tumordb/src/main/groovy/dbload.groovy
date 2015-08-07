@@ -95,13 +95,17 @@ def boolean read(FaunusVertex v, String file_iter) {
             objectID1 = setObjectID(tumor_type, featureType1, name1)
             objectID2 = setObjectID(tumor_type, featureType2, name2)
 
-            id1 = Long.parseLong(Long.toString(date.getTime())) + Long.parseLong(Integer.toString(new Random().nextInt(899) + 100))
-            id2 = Long.parseLong(Long.toString(date.getTime())) + Long.parseLong(Integer.toString(new Random().nextInt(899) + 100))
+            id1 = Long.parseLong(Long.toString(date.getTime() + Integer.toString(new Random().nextInt(899) + 100)))
+            id2 = Long.parseLong(Long.toString(date.getTime() + Integer.toString(new Random().nextInt(899) + 100)))
 
             println "id1: " + id1 + " id2: " + id2
 
+            println id1.class
+
+
             //Does the vertex already exist? If not, create it in the db
-            v.setId(encodeId(Long.toString(id1)))
+            v.setId(id1)
+/*
             v.setProperty("objectID", objectID1)
             v.setProperty("name", name1)
             v.setProperty("tumor_type", tumor_type)
@@ -125,7 +129,7 @@ def boolean read(FaunusVertex v, String file_iter) {
             !end2 ?: v.setProperty("end", end2)
             !strand2 ?: v.setProperty("strand", strand2)
 
-            def edge = v.addEdge(Direction.OUT, 'linkedTo', encodeId(Long.toString(id1)))
+            def edge = v.addEdge(Direction.OUT, 'linkedTo', id1)
             edge.setProperty("sample_size", sample_size1)
             edge.setProperty("min_log_p_uncorrected", min_log_p_uncorrected1)
             edge.setProperty("bonferroni", bonferroni1)
@@ -135,7 +139,7 @@ def boolean read(FaunusVertex v, String file_iter) {
             edge.setProperty("min_log_p_unused_b", min_log_p_unused_b1)
             edge.setProperty("genomic_distance", genomic_distance1)
             edge.setProperty("feature_types", featureType1 + ':' + featureType2)
-
+*/
 
         }
     //})
