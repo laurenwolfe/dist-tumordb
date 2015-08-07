@@ -95,8 +95,8 @@ def boolean read(FaunusVertex v, String file_iter) {
             objectID1 = setObjectID(tumor_type, featureType1, name1)
             objectID2 = setObjectID(tumor_type, featureType2, name2)
 
-            id1 = Long.parseLong(Long.toString(date.getTime() + Integer.toString(new Random().nextInt(899) + 100)))
-            id2 = Long.parseLong(Long.toString(date.getTime() + Integer.toString(new Random().nextInt(899) + 100)))
+            id1 = Long.parseLong(Long.toString(date.getTime()) + Integer.toString(new Random().nextInt(899) + 100))
+            id2 = Long.parseLong(Long.toString(date.getTime()) + Integer.toString(new Random().nextInt(899) + 100))
 
             println "id1: " + id1 + " id2: " + id2
 
