@@ -110,21 +110,20 @@ def boolean read(FaunusVertex v, String file_iter) {
             objectID1 = setObjectID(tumor_type, featureType1, name1)
             objectID2 = setObjectID(tumor_type, featureType2, name2)
 
-            id1L = Long.parseLong(makeID(tumor_type, featureType1, name1), 36)
-            id2L = Long.parseLong(makeID(tumor_type, featureType2, name2), 36)
+/*            Long id1L = Long.parseLong(makeID(tumor_type, featureType1, name1), 36)
+            Long id2L = Long.parseLong(makeID(tumor_type, featureType2, name2), 36)
             long id1 = id1L.longValue()
             long id2 = id2L.longValue()
+*/
 
-/*
             id1Long = Long.parseLong(Long.toString(date.getTime()) + Integer.toString(new Random().nextInt(899) + 100))
             id2Long = Long.parseLong(Long.toString(date.getTime()) + Integer.toString(new Random().nextInt(899) + 100))
             long id1 = id1Long.longValue()
             long id2 = id2Long.longValue()
-*/
+
 
             //Does the vertex already exist? If not, create it in the db
             v.setId(id1)
-
             v.setProperty("objectID", objectID1)
             v.setProperty("name", name1)
             v.setProperty("tumor_type", tumor_type)
