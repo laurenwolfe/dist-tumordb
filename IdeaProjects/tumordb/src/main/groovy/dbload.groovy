@@ -36,7 +36,7 @@ def boolean read(FaunusVertex v, String file_iter) {
       def Random random = new Random()
       def Date date = new Date()
 
-//    new File(file_iter).eachLine({ final String line ->
+    new File(file_iter).eachLine({ final String line ->
         tumor_type = 'stad'
         version = '14jan15'
 
@@ -89,8 +89,6 @@ def boolean read(FaunusVertex v, String file_iter) {
             //Does the vertex already exist? If not, create it in the db
             v.setId(id1)
 
-            println id1
-
             v.setProperty("objectID", objectID1)
             v.setProperty("name", name1)
             v.setProperty("tumor_type", tumor_type)
@@ -129,5 +127,5 @@ def boolean read(FaunusVertex v, String file_iter) {
         } else {
             return false
         }
-    //})
+    })
 }
