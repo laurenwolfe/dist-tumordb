@@ -41,8 +41,8 @@ def boolean read(FaunusVertex v, String file_iter) {
         version = '14jan15'
 
         //Pull in line from the tsv
-        def (   String object1,
-                String object2,
+        def (   object1,
+                object2,
                 correlation1,
                 sample_size1,
                 min_log_p_uncorrected1,
@@ -54,27 +54,24 @@ def boolean read(FaunusVertex v, String file_iter) {
                 genomic_distance1) = file_iter.split('\t')
 
         //Split bioentity column into component data
-        def (   String dataType1,
-                String featureType1,
-                String name1,
-                String chr1,
+        def (   dataType1,
+                featureType1,
+                name1,
+                chr1,
                 start1,
                 end1,
                 strand1,
                 annotation1) = object1.split(':')
 
         //Split bioentity column into component data
-        def (   String dataType2,
-                String featureType2,
-                String name2,
-                String chr2,
+        def (   dataType2,
+                featureType2,
+                name2,
+                chr2,
                 start2,
                 end2,
                 strand2,
                 annotation2) = object2.split(':')
-
-//        def String objectID1
-//        def String objectID2
 
         //This is for filtering by annotation type, currently both bioentities need to be code_potential_somatic for the
         //code block to execute.
@@ -86,11 +83,13 @@ def boolean read(FaunusVertex v, String file_iter) {
 
             id1Long = Long.parseLong(Long.toString(date.getTime()) + Integer.toString(new Random().nextInt(899) + 100))
             id2Long = Long.parseLong(Long.toString(date.getTime()) + Integer.toString(new Random().nextInt(899) + 100))
-            id1 = id1Long.longValue()
-            id2 = id2Long.longValue()
+            long id1 = id1Long.longValue()
+            long id2 = id2Long.longValue()
 
             //Does the vertex already exist? If not, create it in the db
             v.setId(id1)
+
+            println id1
 
             v.setProperty("objectID", objectID1)
             v.setProperty("name", name1)
@@ -103,7 +102,7 @@ def boolean read(FaunusVertex v, String file_iter) {
             !end1 ?: v.setProperty("end", end1)
             !strand1 ?: v.setProperty("strand", strand1)
 
-            v.setId(encodeId(Long.toString(id2)))
+            v.setId(id2)
             v.setProperty("objectID", objectID2)
             v.setProperty("name", name2)
             v.setProperty("tumor_type", tumor_type)
