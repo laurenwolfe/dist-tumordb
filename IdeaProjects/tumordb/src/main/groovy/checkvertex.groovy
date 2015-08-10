@@ -1,5 +1,4 @@
-
-def TitanVertex getOrCreateVertex(vertex,  graph, context, log) {
+def TitanVertex getOrCreateVertex(FaunusVertex vertex, TitanGraph graph, TaskInputOutputContext context, Logger log) {
     String uniqueKey = 'objectID'
     Object uniqueValue = vertex.getProperty(uniqueKey)
     Vertex titanVertex
