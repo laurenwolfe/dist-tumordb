@@ -75,7 +75,7 @@ def boolean read(FaunusVertex v, String file_iter) {
 
         //This is for filtering by annotation type, currently both bioentities need to be code_potential_somatic for the
         //code block to execute.
-//        if (annotation1 == "code_potential_somatic" && annotation2 == "code_potential_somatic") {
+        if (annotation1 == "code_potential_somatic" && annotation2 == "code_potential_somatic") {
 
             //Generate objectIDs by concatenating the tumor type, feature type and gene name
             objectID1 = setObjectID(tumor_type, featureType1, name1)
@@ -124,7 +124,10 @@ def boolean read(FaunusVertex v, String file_iter) {
             edge.setProperty("min_log_p_unused_b", min_log_p_unused_b1)
             edge.setProperty("genomic_distance", genomic_distance1)
             edge.setProperty("feature_types", featureType1 + ':' + featureType2)
- //       }
+
+            return true
+        } else {
+            return false
+        }
     //})
-    return true
 }
