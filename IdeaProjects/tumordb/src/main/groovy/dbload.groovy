@@ -37,7 +37,7 @@ def boolean read(FaunusVertex v, String file_iter) {
       def Random random = new Random()
       def Date date = new Date()
 
-    new File(file_iter).eachLine({ final String line ->
+//    new File(file_iter).eachLine({ final String line ->
         tumor_type = 'stad'
         version = '14jan15'
 
@@ -128,5 +128,5 @@ def boolean read(FaunusVertex v, String file_iter) {
         } else {
             return false
         }
-    })
+//    })
 }
