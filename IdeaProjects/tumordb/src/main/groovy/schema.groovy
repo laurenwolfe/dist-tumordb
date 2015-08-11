@@ -48,6 +48,6 @@ genomic_distance = mgmt.makePropertyKey('genomic_distance').dataType(Decimal.cla
 feature_types = mgmt.makePropertyKey('feature_types').dataType(String.class).make()
 
 //Create index of ObjectId to speed map building
-mgmt.buildIndex('byObjectId', Vertex.class).addKey(objectId).unique().buildCompositeIndex()
+mgmt.buildIndex('byObjectID', Vertex.class).addKey(objectID).unique().buildCompositeIndex()
 
 mgmt.commit()
