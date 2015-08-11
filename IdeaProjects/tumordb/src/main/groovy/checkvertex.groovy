@@ -1,11 +1,12 @@
 def TitanVertex getOrCreateVertex(FaunusVertex vertex, TitanGraph graph, TaskInputOutputContext context, Logger log) {
+    println 'HITTTTTTTTT'
     String uniqueKey = 'objectID'
     Object uniqueValue = vertex.getProperty(uniqueKey)
     TitanVertex titanVertex
 
     if (null == uniqueValue)
         throw new RuntimeException(vertex + " has no value for key " + uniqueKey)
-
+    /*
     Iterator<Vertex> it = graph.query().has(uniqueKey, uniqueValue).vertices().iterator()
 
     if(it.hasNext()) {
@@ -15,6 +16,9 @@ def TitanVertex getOrCreateVertex(FaunusVertex vertex, TitanGraph graph, TaskInp
     } else {
         titanVertex = graph.addVertex(vertex.getId())
     }
+    */
+
+    titanVertex = vertex.getId()
 
     return titanVertex;
 }
