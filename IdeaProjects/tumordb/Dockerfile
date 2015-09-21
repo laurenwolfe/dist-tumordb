@@ -22,7 +22,7 @@ COPY src/main/conf/hadoop-common-2.2.0.jar /lib/
 COPY src/main/conf/hadoop/ /opt/$TITAN_VER/conf/hadoop/
 COPY src/main/conf/ /opt/$TITAN_VER/conf/
 COPY src/main/groovy/ /opt/$TITAN_VER/
-COPY src/dirs.sh /opt/$TITAN_VER/
+COPY dirs.sh /opt/$TITAN_VER/
 
 WORKDIR /opt/$TITAN_VER/
 
