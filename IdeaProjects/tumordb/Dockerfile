@@ -18,6 +18,7 @@ WORKDIR /opt/
 RUN unzip /tmp/titan.zip
 RUN rm /tmp/titan.zip
 
+COPY scr/main/conf/hadoop-common-2.2.0.jar /lib/
 COPY src/main/conf/hadoop/ /opt/$TITAN_VER/conf/hadoop/
 COPY src/main/conf/ /opt/$TITAN_VER/conf/
 COPY src/main/groovy/ /opt/$TITAN_VER/
