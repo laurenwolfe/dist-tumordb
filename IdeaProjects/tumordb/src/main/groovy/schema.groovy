@@ -6,6 +6,7 @@ mgmt = g.getManagementSystem()
 
 //This will be generated as "feature_type:geneId"
 objectID = mgmt.makePropertyKey('objectID').dataType(String.class).make()
+tumor_type = mgmt.makePropertyKey('tumor_type').dataType(String.class).make()
 type = mgmt.makePropertyKey('type').dataType(String.class).make()
 name = mgmt.makePropertyKey('name').dataType(String.class).make()
 chr = mgmt.makePropertyKey('chr').dataType(String.class).make()
@@ -54,5 +55,6 @@ feature_types = mgmt.makePropertyKey('feature_types').dataType(String.class).mak
 //Create index of ObjectId to speed map building
 mgmt.buildIndex('byObjectID', Vertex.class).addKey(objectID).unique().buildCompositeIndex()
 mgmt.buildIndex('byType', Vertex.class).addKey(type).buildMixedIndex("search")
+mgmt.buildIndex
 
 mgmt.commit()

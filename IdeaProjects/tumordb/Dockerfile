@@ -24,7 +24,4 @@ COPY src/main/groovy/ /opt/$TITAN_VER/
 
 WORKDIR /opt/$TITAN_VER/
 
-#RUN mkdir -p /rexhome/ext/titan
-#RUN cp -r /lib/*.* /rexhome/ext/titan
-
 EXPOSE 8182
