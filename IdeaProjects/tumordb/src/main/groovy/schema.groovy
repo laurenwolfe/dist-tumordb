@@ -55,6 +55,6 @@ feature_types = mgmt.makePropertyKey('feature_types').dataType(String.class).mak
 //Create index of ObjectId to speed map building
 mgmt.buildIndex('byObjectID', Vertex.class).addKey(objectID).unique().buildCompositeIndex()
 mgmt.buildIndex('byType', Vertex.class).addKey(type).buildMixedIndex("search")
-mgmt.buildIndex
+mgmt.buildIndex('byName', Vertex.class).addKey(name).buildCompositeIndex()
 
 mgmt.commit()
