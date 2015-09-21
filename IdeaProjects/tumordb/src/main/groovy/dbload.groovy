@@ -33,50 +33,52 @@ def String setObjectID(String tumor_type, String featureType, String name) {
 
 //Pulls each line from the file specified in script-input.properties
 def boolean read(FaunusVertex v, String file_iter) {
-//    def details = file_iter.split('\\.')
-      def Random random = new Random()
-      def Date date = new Date()
+    def details = file_iter.split('\\.')
+    def Random random = new Random()
+    def Date date = new Date()
 
-//    new File(file_iter).eachLine({ final String line ->
-        tumor_type = 'stad'
-        version = '14jan15'
+    new File(file_iter).eachLine({ final String line ->
+        //tumor_type = 'stad'
+        //version = '14jan15'
 
         //Pull in line from the tsv
-        def (   object1,
-                object2,
-                correlation1,
-                sample_size1,
-                min_log_p_uncorrected1,
-                bonferroni1,
-                excluded_sample_count_a1,
-                min_log_p_unused_a1,
-                excluded_sample_count_b1,
-                min_log_p_unused_b1,
-                genomic_distance1) = file_iter.split('\t')
+        def (object1,
+             object2,
+             correlation1,
+             sample_size1,
+             min_log_p_uncorrected1,
+             bonferroni1,
+             excluded_sample_count_a1,
+             min_log_p_unused_a1,
+             excluded_sample_count_b1,
+             min_log_p_unused_b1,
+             genomic_distance1) = file_iter.split('\t')
 
         //Split bioentity column into component data
-        def (   dataType1,
-                featureType1,
-                name1,
-                chr1,
-                start1,
-                end1,
-                strand1,
-                annotation1) = object1.split(':')
+        def (dataType1,
+             featureType1,
+             name1,
+             chr1,
+             start1,
+             end1,
+             strand1,
+             annotation1) = object1.split(':')
 
         //Split bioentity column into component data
-        def (   dataType2,
-                featureType2,
-                name2,
-                chr2,
-                start2,
-                end2,
-                strand2,
-                annotation2) = object2.split(':')
+        def (dataType2,
+             featureType2,
+             name2,
+             chr2,
+             start2,
+             end2,
+             strand2,
+             annotation2) = object2.split(':')
 
         //This is for filtering by annotation type, currently both bioentities need to be code_potential_somatic for the
         //code block to execute.
-        if (annotation1 == "code_potential_somatic" && annotation2 == "code_potential_somatic") {
+        if (featureType1 != "CLIN" && featureType2 != "CLIN" && featureType1 != "SAMP" &&
+                featureType2 != "SAMP" && !(featureType1 == "GNAB" && featureType2 == "GNAB" &&
+                (annotation1 == 'code_potential_somatic' || annotation2 == 'code_potential_somatic'))) {
 
             //Generate objectIDs by concatenating the tumor type, feature type and gene name
             objectID1 = setObjectID(tumor_type, featureType1, name1)
@@ -87,33 +89,38 @@ def boolean read(FaunusVertex v, String file_iter) {
             long id1 = id1Long.longValue()
             long id2 = id2Long.longValue()
 
-
             //Does the vertex already exist? If not, create it in the db
             v.setId(id1)
             v.setProperty("objectID", objectID1)
             v.setProperty("name", name1)
             v.setProperty("tumor_type", tumor_type)
             v.setProperty("version", version)
+            v.setProperty("feature_type", featureType1)
 
             //Some of these may be empty, so let's test for that.
             !chr1 ?: v.setProperty("chr", chr1)
             !start1 ?: v.setProperty("start", start1)
             !end1 ?: v.setProperty("end", end1)
             !strand1 ?: v.setProperty("strand", strand1)
+            !annotation1 ?: v.setProperty("annotation", annotation1)
 
             v.setId(id2)
             v.setProperty("objectID", objectID2)
             v.setProperty("name", name2)
             v.setProperty("tumor_type", tumor_type)
             v.setProperty("version", version)
+            v.setProperty("feature_type", featureType2)
 
             //Some of these may be empty, so let's test for that.
             !chr2 ?: v.setProperty("chr", chr2)
             !start2 ?: v.setProperty("start", start2)
             !end2 ?: v.setProperty("end", end2)
             !strand2 ?: v.setProperty("strand", strand2)
+            !annotation2 ?: v.setProperty("annotation", annotation2)
 
+            //graph.addEdge(null, outVertex, inVertex, label) :
             def edge = v.addEdge(Direction.OUT, 'pairwise', id1)
+            edge.setProperty("correlation", correlation1)
             edge.setProperty("sample_size", sample_size1)
             edge.setProperty("min_log_p_uncorrected", min_log_p_uncorrected1)
             edge.setProperty("bonferroni", bonferroni1)
@@ -128,5 +135,5 @@ def boolean read(FaunusVertex v, String file_iter) {
         } else {
             return false
         }
-//    })
+    })
 }

@@ -5,13 +5,8 @@ g = TitanFactory.open('conf/titan-cassandra.properties')
 mgmt = g.getManagementSystem()
 
 //This will be generated as "feature_type:geneId"
-objectId = mgmt.makePropertyKey('objectID').dataType(String.class).make()
-//Type of relationship between vertices -- all pairwise for this batch load script
-pairwise = mgmt.makeEdgeLabel('pairwise').multiplicity(Multiplicity.MULTI).make()
-//Identifies these objects as bioentities, as opposed to drugs or other objects we may add later
-bioentity = mgmt.makeVertexLabel('bioentity').make();
-
-//Vertex properties
+objectID = mgmt.makePropertyKey('objectID').dataType(String.class).make()
+type = mgmt.makePropertyKey('type').dataType(String.class).make()
 name = mgmt.makePropertyKey('name').dataType(String.class).make()
 chr = mgmt.makePropertyKey('chr').dataType(String.class).make()
 start = mgmt.makePropertyKey('start').dataType(Integer.class).make()
@@ -19,6 +14,15 @@ end = mgmt.makePropertyKey('end').dataType(Integer.class).make()
 strand = mgmt.makePropertyKey('strand').dataType(Character.class).make()
 tumor_type = mgmt.makePropertyKey('tumor_type').dataType(String.class).make()
 version = mgmt.makePropertyKey('version').dataType(String.class).make()
+feature_type = mgmt.makePropertyKey('feature_type').dataType(String.class).make()
+annotation = mgmt.makePropertyKey('annotation').dataType(String.class).make()
+
+//Labels
+bioentity = mgmt.makeVertexLabel('bioentity').make();
+pairwise = mgmt.makeEdgeLabel('pairwise').multiplicity(Multiplicity.MULTI).make()
+datasetslice = mgmt.makeEdgeLabel('datasetslice').multiplicity(Multiplicity.MULTI).make()
+proximal = mgmt.makeEdgeLabel('proximal').multiplicity(Multiplicity.MULTI).make()
+codesfor = mgmt.makeEdgeLabel('codesfor').multiplicity(Multiplicity.MULTI).make()
 
 /*
 Edge properties -- inline comment corresponds to column #:
@@ -49,5 +53,6 @@ feature_types = mgmt.makePropertyKey('feature_types').dataType(String.class).mak
 
 //Create index of ObjectId to speed map building
 mgmt.buildIndex('byObjectID', Vertex.class).addKey(objectID).unique().buildCompositeIndex()
+mgmt.buildIndex('byType', Vertex.class).addKey(type).buildMixedIndex("search")
 
 mgmt.commit()
